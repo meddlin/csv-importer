@@ -2,17 +2,21 @@ import csv
 
 def make_sql_create(table_name: str, col_type_data):
     # what is needed for this method?
-
     # col_data = [
     #     {
     #         c1: varchar,
     #         c2: decimal,
     #     }
     # ]
+
+    last_key = list(col_type_data.keys())[-1]
     query = f"create table {table_name} ("
 
     for key in col_type_data:
-        query = query + f"{key} {col_type_data[key]}, "
+        if key == last_key:
+            query = query + f"{key} {col_type_data[key]}"
+        else:
+            query = query + f"{key} {col_type_data[key]}, "
 
     query = query + ")"
     return query
@@ -57,8 +61,8 @@ def main():
     with open(filename, 'r', encoding = 'utf-8') as file:
         reader = csv.DictReader(file)
 
-        headers = reader.fieldnames
-        print(headers)
+        # headers = reader.fieldnames
+        # print(headers)
         row1 = next(reader)
         type_data = create_type_dictionary(row1)
         print(type_data)
